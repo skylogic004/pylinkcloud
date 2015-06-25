@@ -41,7 +41,10 @@ class Ui_PyLinkCloud(object):
         PyLinkCloud.setStatusBar(self.statusbar)
         self.actionTODO = QtWidgets.QAction(PyLinkCloud)
         self.actionTODO.setObjectName("actionTODO")
+        self.actionTest = QtWidgets.QAction(PyLinkCloud)
+        self.actionTest.setObjectName("actionTest")
         self.menuHello.addAction(self.actionTODO)
+        self.menuHello.addAction(self.actionTest)
         self.menubar.addAction(self.menuHello.menuAction())
 
         self.retranslateUi(PyLinkCloud)
@@ -54,6 +57,7 @@ class Ui_PyLinkCloud(object):
         self.treeWidget.setSortingEnabled(True)
         self.menuHello.setTitle(_translate("PyLinkCloud", "File"))
         self.actionTODO.setText(_translate("PyLinkCloud", "TODO"))
+        self.actionTest.setText(_translate("PyLinkCloud", "test"))
 
 
 if __name__ == "__main__":

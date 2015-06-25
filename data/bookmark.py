@@ -42,3 +42,45 @@ class Bookmark():
 		s += Fore.RESET
 		return s
 
+	def howSimilar(self, otherBookmark):
+		""" How similar is this bookmark to another bookmark? """
+
+		numDiff = 3
+
+		if (self.linkURL == otherBookmark.linkURL):
+			numDiff -= 1
+			
+		if (self.linkFilename == otherBookmark.linkFilename):
+			numDiff -=1
+		
+		if (self.linkTitle == otherBookmark.linkTitle):
+			numDiff -= 1
+
+		return numDiff
+
+	def explainDifference(self, otherBookmark, thisNickname='New', otherNickname='Old'):
+		out = ''
+
+		# Is the URL the same?
+		if (self.linkURL == otherBookmark.linkURL):
+			out += 'Both have URL: %s' % self.linkURL
+		else:
+			out += '%s URL: %s\n%s URL: %s' % (thisNickname, self.linkURL, otherNickname, otherBookmark.linkURL)
+
+		out += '\n'
+
+		# Is the filename the same?
+		if (self.linkFilename == otherBookmark.linkFilename):
+			out += 'Both have filename: %s' % self.linkFilename
+		else:
+			out += '%s filename: %s\n%s filename: %s' % (thisNickname, self.linkFilename, otherNickname, otherBookmark.linkFilename)
+
+		out += '\n'
+
+		# Is the title the same?
+		if (self.linkTitle == otherBookmark.linkTitle):
+			out += 'Both have title: %s' % self.linkTitle
+		else:
+			out += '%s title: %s\n%s title: %s' % (thisNickname, self.linkTitle, otherNickname, otherBookmark.linkTitle)
+
+		return out

@@ -23,6 +23,7 @@ from colorama import Fore, Back, Style
 # Style: DIM, NORMAL, BRIGHT, RESET_ALL
 
 from gui.viewer import Viewer
+from gui.bookmarksToAdd import BookmarksToAdd
 
 def stripQuotes(s):
 	if (s.startswith('"') and s.endswith('"')) or (s.startswith('\'') and s.endswith('\'')):
@@ -61,12 +62,12 @@ class Controller():
 
 		print(Fore.RED + '''
 			TODO: 
-			- DONE: tags from folder paths
-			- DONE: GUI with list of all bookmarks in the DB, and click to open in browser. Make in QT?
 			- handle case when duplicate found
 			- manual tags
 			- manual description
 			- search (tags, name, etc)
+			- get link name as website title (go read the HTML page...)
+			- cache a screenshot of the website, for link preview
 		''' + Fore.RESET)
 
 		self.bookmarks = self.db.getBookmarks()
@@ -77,7 +78,7 @@ class Controller():
 	#####################################################################################
 	def scanAndSaveToDB(self):
 		self.bookmarks = self.db.getBookmarks()
-		files.scanAndSaveToDB(self.bookmarksDir, self.db, self.bookmarks)
+		files.scanAndSaveToDB(self.bookmarksDir, self.db, self.bookmarks, self.gui)
 
 		# Reload DB
 		self.bookmarks = self.db.getBookmarks()

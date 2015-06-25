@@ -1,14 +1,18 @@
 #!python3.4
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from gui.qt_viewer import Ui_PyLinkCloud
 import webbrowser
 
+from gui.qt_viewer import Ui_PyLinkCloud
+from gui.bookmarksToAdd import BookmarksToAdd
+
 class Viewer(QtWidgets.QMainWindow, Ui_PyLinkCloud):
-	def __init__(self, parent = None, controller = None):
+	def __init__(self, parent=None, controller=None):
 		QtWidgets.QMainWindow.__init__(self, parent)
 		self.setupUi(self)
 		self.scanBtn.clicked.connect(controller.scanAndSaveToDB)
+
+		self.actionTest.triggered.connect(self.test)
 
 		self.controller = controller
 
@@ -17,7 +21,7 @@ class Viewer(QtWidgets.QMainWindow, Ui_PyLinkCloud):
 			{'name': 'Title', 'width': 400},
 			{'name': 'URL', 'width': 300}
 		]
-		self.treeWidget.setHeaderLabels([c['name'] for c in self.treeWidgetColumns]);
+		self.treeWidget.setHeaderLabels([c['name'] for c in self.treeWidgetColumns])
 		for idx, c in enumerate(self.treeWidgetColumns):
 			self.treeWidget.setColumnWidth(idx, c['width'])
 
@@ -32,7 +36,7 @@ class Viewer(QtWidgets.QMainWindow, Ui_PyLinkCloud):
 			if (c['name'] == colName):
 				return idx
 
-	def onClickItem (self, item):
+	def onClickItem(self, item):
 		#item.treeWidget()
 		# item.setText(0, 'testing')
 		url = item.text(self.getTreeWidgetColIdx('URL'))
@@ -40,6 +44,8 @@ class Viewer(QtWidgets.QMainWindow, Ui_PyLinkCloud):
 
 	def showBookmarks(self, tagNames, bookmarks):
 		# http://doc.qt.io/qt-5/qtreewidgetitem.html
+
+		self.treeWidget.clear()
 
 		for tagName in tagNames:
 			tagFolder = QtWidgets.QTreeWidgetItem(self.treeWidget, [tagName, '', ''], 0)
@@ -52,6 +58,11 @@ class Viewer(QtWidgets.QMainWindow, Ui_PyLinkCloud):
 
 		# self.treeWidget.insertTopLevelItem(0, widget)
 		# treeWidget.expandItem(parent);
+
+	def test(self):
+		print('testing!')
+		d = BookmarksToAdd(parent=self)
+		d.show()
 
 # Not used - just an example of how to instantitate this GUI
 if __name__ == '__main__':

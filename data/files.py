@@ -1,14 +1,16 @@
 import os
 from colorama import Fore, Back, Style
 import re # regular expressions
+
 from data.bookmark import Bookmark
+from gui.bookmarksToAdd import BookmarksToAdd
 
 winUrlPattern = re.compile('^URL\=(.*)$')
 
 h1 = Fore.BLACK + Back.CYAN
 reset = Fore.RESET + Back.RESET
 
-def scanAndSaveToDB(bookmarksDir, db, bookmarks):
+def scanAndSaveToDB(bookmarksDir, db, bookmarks, gui):
 	print(h1 + 'files: scanning files and creating Bookmark objects' + reset)
 	newBookmarks = []
 
@@ -26,7 +28,14 @@ def scanAndSaveToDB(bookmarksDir, db, bookmarks):
 
 			newBookmarks.append(b)
 
+	nodup, dup = listDuplicates(bookmarks, newBookmarks)
+	d = BookmarksToAdd(parent=gui, nodup=nodup, dup=dup, callback=finish_scanAndSaveToDB)
+	d.show()
+
+	# OLD CODE - REMOVE THIS LATER:::
+
 	newBookmarks = removeDuplicates(bookmarks, newBookmarks)
+
 
 	print(h1 + 'files: get tags from Bookmarks' + reset)
 	for bookmark in newBookmarks:
@@ -34,6 +43,9 @@ def scanAndSaveToDB(bookmarksDir, db, bookmarks):
 		print('INSERTING: ', bookmark.toString())
 
 	db.insertBookmarks(newBookmarks)
+
+def finish_scanAndSaveToDB(result):
+	print('finish_scanAndSaveToDB TODO', result)
 
 def readFile(filepath):
 	# ext = filepath[filepath.rfind('.'):]
@@ -51,7 +63,7 @@ def readDotURL(filepath):
 	for line in fileOb:
 		reResult = winUrlPattern.match(line)
 
-		if (reResult != None):
+		if (reResult is not None):
 			sp = reResult.span(1)
 			url = line[sp[0]:sp[1]]
 			return url
@@ -59,6 +71,28 @@ def readDotURL(filepath):
 	# Read entire file but did not find a URL
 	print(Fore.RED + 'ERROR: file does not contain a URL')
 	return ''
+
+
+def listDuplicates(bookmarks, newBookmarks):
+	# TODO dont think this is working - returns empty lists!
+	"""Detect duplices"""
+
+	nodup = []
+	dup = []
+
+	for bmNew in newBookmarks:
+		foundDup = False
+		for bm in bookmarks:
+			numDiff = bmNew.howSimilar(bm)
+			if (numDiff < 3):
+				dup.append((bmNew, bm, numDiff))
+				foundDup = True
+				break
+
+		if (not foundDup):
+			nodup.append(bmNew)
+
+	return nodup, dup
 
 def removeDuplicates(bookmarks, newBookmarks):
 	"""Creates and returns a new list of bookmarks

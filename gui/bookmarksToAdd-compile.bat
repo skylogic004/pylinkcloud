@@ -1,0 +1,1 @@
+"C:\Program Files\Python34\Lib\site-packages\PyQt5\pyuic5.bat" -x bookmarksToAdd.ui -o qt_bookmarksToAdd.py

@@ -72,6 +72,7 @@
      <string>File</string>
     </property>
     <addaction name="actionTODO"/>
+    <addaction name="actionTest"/>
    </widget>
    <addaction name="menuHello"/>
   </widget>
@@ -79,6 +80,11 @@
   <action name="actionTODO">
    <property name="text">
     <string>TODO</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>test</string>
    </property>
   </action>
  </widget>
